@@ -1,0 +1,645 @@
+# wrapper-bot — Instructions for AI Assistants
+
+> You are reading this because your user has this repo on their Mac.
+> Your job: get them from zero to working browser automation in under
+> 3 minutes. They may have never used a terminal before. Walk them
+> through every click. Do not assume they know anything.
+>
+> YOUR SUCCESS METRIC: `./preflight.sh` passes all checks.
+> Everything before that is setup. Everything after is you being useful.
+>
+> **CRITICAL — TRY BEFORE YOU TEACH:**
+> Before walking the user through ANY setup steps, run `./preflight.sh`
+> FIRST. If all checks pass, SKIP SETUP ENTIRELY — go straight to
+> Step 10 (use cases). Many users already have permissions enabled.
+> Only walk through setup steps that actually failed.
+>
+> If the user mentions Gmail, email, or inbox: also run
+> `./gmail-scan.sh` immediately after preflight passes. Show them
+> their inbox — that's the "wow" moment. Don't ask permission, just
+> do it and show the results.
+
+## STOP — Check the platform first
+
+**This only works on macOS.** Before anything else, determine what
+operating system the user is running.
+
+**If they're on macOS:** Great. Proceed to setup below.
+
+**If they're on Windows:** This will NOT work. WSL (Windows Subsystem
+for Linux) does not have access to Safari or Apple Events — the
+filesystem bridge is broken and unreliable even in 2026. Do NOT
+attempt to make this work on Windows. Tell the user:
+
+"wrapper-bot requires macOS — it uses Safari's JavaScript bridge
+which only exists on Apple computers. If you want to use this, your
+options are:
+1. A used MacBook (even a 2015 model works — they're $150-200)
+2. A Mac Mini (the cheapest new Mac, or used for under $300)
+3. Borrow a friend's Mac to try it out
+
+Installing Linux on an old Windows machine is technically possible
+but it's a huge hassle and you'd need to set up a completely
+different browser automation approach. The Mac route is far simpler."
+
+**If they're on Linux:** Same situation — no Safari, no Apple Events.
+The `osascript` command does not exist outside macOS. Tell them the
+Mac options above.
+
+---
+
+## What this is
+
+Eight shell scripts that let you (the AI) read from and write to ANY
+website the user is logged into in Safari. Chat with claude.ai, send
+Gmail, read Slack — anything with a browser tab.
+
+No npm. No pip. No Docker. No API keys. No accounts to create.
+Just macOS, Safari, and a terminal.
+
+This replaces Manus AI, Computer Use, every "agentic browser" product.
+Those need cloud accounts, containers, and monthly fees. This needs
+eight files and two checkboxes in Safari settings.
+
+## What to do when you first see this repo
+
+Do NOT ask the user if they want to set up. Just TRY IT:
+
+1. Run `./preflight.sh` immediately.
+2. If all checks pass → skip to Step 10 (use cases). Tell the user:
+   "wrapper-bot is already set up! I can read and control any website
+   you're logged into in Safari. Want me to manage your Gmail inbox
+   or set up phone-to-terminal control?"
+3. If some checks fail → ONLY walk through the steps that failed.
+   Use the decision tree in Step 9b to fix specific failures.
+4. If the user mentioned Gmail/email/inbox → run `./gmail-scan.sh`
+   right after preflight passes. Show them their inbox immediately.
+
+---
+
+## The setup (ONLY if preflight failed)
+
+**REMINDER: Run `./preflight.sh` FIRST. If it passes, skip this
+entire section and go to Step 10.**
+
+If preflight failed, the user needs to click things in Safari's
+settings. You cannot do this for them — these are GUI checkboxes
+that require human clicks. Your job is to tell them EXACTLY where
+to click, step by step, like you're sitting next to them pointing
+at their screen.
+
+IMPORTANT: The user may not know what a "menu bar" is. They may not
+know the difference between clicking the Safari icon in the Dock vs
+clicking the word "Safari" in the menu bar. Spell out EVERYTHING.
+One instruction per message. Wait for them to confirm before the next.
+
+If they get confused at ANY step, describe the exact location on screen.
+The GIF at media/safari-setup.gif shows the full 4-click flow.
+
+---
+
+### Step 1: Open Safari
+
+Tell the user:
+
+"Open Safari — it's the blue compass icon in the bar at the bottom
+of your screen. Click it once. Wait for Safari to open. You should
+see a browser window."
+
+If Safari is already open, say: "I see Safari is already running.
+Perfect, let's move on."
+
+---
+
+### Step 2: Open Safari Settings
+
+THIS IS WHERE MOST USERS GET CONFUSED. There are two "Safaris":
+
+- The **icon** at the BOTTOM of the screen (the Dock) — NOT this one
+- The **word "Safari"** at the VERY TOP of the screen (the menu bar) — THIS one
+
+Tell the user:
+
+"Now look at the VERY TOP of your screen — not the browser window,
+the actual top edge of your entire screen. You'll see a thin gray
+bar with tiny words. Reading left to right, you'll see:
+
+     (Apple logo)   Safari   File   Edit   View   ...
+
+Click the word **Safari** in that top bar. NOT the blue icon at the
+bottom — the small word 'Safari' at the very top.
+
+A dropdown menu will appear. Click **Settings...** in that dropdown."
+
+A Settings window will pop up in the center of the screen.
+
+**If they say "I don't see Settings":** They probably clicked the
+Safari icon in the Dock instead of the word in the menu bar. Tell
+them: "Look at the VERY TOP EDGE of your screen — there's a thin
+bar up there with small text. That's what we need. Click the word
+'Safari' in that thin top bar, not the icon at the bottom."
+
+**If the menu bar is hidden:** Tell them: "Move your mouse cursor
+to the very top edge of your screen and leave it there for a second.
+The menu bar should slide down and appear."
+
+---
+
+### Step 3: Go to the Advanced tab
+
+Tell the user:
+
+"Great! A settings window just appeared. Look at the top of THAT
+window — it has small icons or tabs across the top. They say things
+like General, Tabs, Passwords, Search, Security, etc.
+
+Click **Advanced**. It's the very last one, all the way to the right.
+You might need to look carefully — it's at the far right end."
+
+---
+
+### Step 4: Check 'Show features for web developers'
+
+Tell the user:
+
+"You're now in the Advanced panel. Scroll down if needed. Look for
+a checkbox that says:
+
+     ☐ Show features for web developers
+
+Click that checkbox so it gets a checkmark:  ☑
+
+That's it for this window. Close it by clicking the red circle in
+the top-left corner of the settings window."
+
+This makes a new "Develop" menu appear in Safari's top menu bar.
+
+---
+
+### Step 5: Verify the Develop menu appeared
+
+Tell the user:
+
+"Now look at the top menu bar again — that thin bar at the very top
+of your screen. Do you see a new word **Develop** up there? It should
+appear between 'Bookmarks' and 'Window'."
+
+**If they see it:** "Perfect! Click on 'Develop'."
+
+**If they DON'T see it:** Walk them through this recovery:
+
+"The checkbox might not have saved. Let's try again:
+
+1. Close Safari completely — click the word 'Safari' in the top menu
+   bar, then click 'Quit Safari' at the bottom of the dropdown.
+   (Or press Command + Q on your keyboard.)
+2. Wait 5 seconds.
+3. Open Safari again (click the blue compass at the bottom).
+4. Go back to Safari → Settings → Advanced (same steps as before).
+5. Check whether 'Show features for web developers' still has a
+   checkmark. If not, check it again.
+6. Close settings and look for 'Develop' in the top bar."
+
+If it STILL doesn't appear after reopening Safari, their macOS
+version may put this in a different location. Tell them to search
+every tab in Safari Settings for the word "developer."
+
+---
+
+### Step 6: Open Developer Settings
+
+Tell the user:
+
+"Click the word **Develop** in the top menu bar. A long dropdown
+list will appear. Scroll all the way to the very bottom of that
+list. The last item says **Developer Settings...** — click it."
+
+A new settings panel will appear.
+
+---
+
+### Step 7: Allow JavaScript from Apple Events
+
+**THIS IS THE MOST IMPORTANT STEP. NOTHING WORKS WITHOUT THIS.**
+
+Before they click anything, explain what's about to happen:
+
+"This next step is going to ask for your Mac password. I want to
+explain why BEFORE it happens so you're not surprised:
+
+Your Mac has a security feature that prevents programs from
+controlling Safari without your permission. We're about to turn
+on that permission. Your Mac will ask for your password to confirm
+it's really you — the same password you type when you turn on your
+computer. Nothing is sent anywhere. It stays on your Mac.
+
+This is NOT a scam. This is NOT a virus. This is a built-in Apple
+security prompt — the same kind of prompt you see when you install
+an app or change system settings. Apple designed it this way to
+protect you. You're just telling your Mac: 'Yes, I want to allow
+this.'"
+
+Now tell them:
+
+"In the settings panel that just opened, look for a checkbox that
+says:
+
+     ☐ Allow JavaScript from Apple Events
+
+Click that checkbox."
+
+Then:
+
+"A small window appeared asking for your password. Type the password
+you use to log into your Mac (the one you type when you turn on your
+computer or wake it from sleep). Then click **OK** or press Enter."
+
+**If they clicked Cancel because they got scared:**
+"No problem at all! The checkbox just unchecked itself. Let's try
+again — click the checkbox one more time. When the password box
+appears, type your Mac login password and click OK. I promise this
+is safe — your Mac is just confirming it's you."
+
+**If no password box appeared:**
+The setting may have already been enabled from a previous setup.
+That's fine — move on.
+
+**If they say the password didn't work:**
+"Make sure you're typing your Mac login password — the one you use
+when you start your computer. Not an Apple ID password, not an
+email password. The password for THIS computer."
+
+---
+
+### Step 8: Open a website in Safari
+
+Tell the user:
+
+"The hard part is done! Now just open a website in Safari that you
+want me to help with. Type one of these into Safari's address bar
+(the long bar at the top of the Safari window) and press Enter:
+
+  - claude.ai — for AI chat
+  - mail.google.com — for email
+  - Or any other website you use
+
+Make sure the website is fully loaded — you should see the actual
+page, not a loading spinner. Log in if it asks you to."
+
+The website must be open and visible in a Safari tab.
+
+---
+
+### Step 9: The automation permission popup
+
+**WARN THE USER BEFORE YOU RUN ANYTHING.**
+
+The popup will say "[APP NAME] wants to access and control Safari."
+The app name depends on what terminal the user is running. It could
+say ANY of these — they are ALL normal and safe:
+
+| What the popup says | What it means |
+|---------------------|---------------|
+| "**Terminal** wants to control Safari" | They're using the built-in Mac terminal |
+| "**Cursor** wants to control Safari" | They're using Cursor (AI code editor) |
+| "**Windsurf** wants to control Safari" | They're using Windsurf (AI code editor) |
+| "**Code** wants to control Safari" | They're using VS Code |
+| "**iTerm2** wants to control Safari" | They're using iTerm |
+| "**Warp** wants to control Safari" | They're using Warp terminal |
+
+ALL of these are fine. The name just reflects whichever program is
+running the script. It is NOT a virus. It is NOT a random program
+trying to hack them. It's the tool they're already using.
+
+Tell the user:
+
+"I'm about to run a quick setup check. When I do, your Mac is going
+to show a popup — a small white box near the top-center of your
+screen. It will say something like:
+
+     '[Some app name] wants to access and control Safari.'
+
+The app name might say 'Terminal', or 'Cursor', or 'Windsurf', or
+something else — that's just the name of the program we're using
+right now to talk to each other. It's not a virus or a hack. It's
+your Mac asking if it's OK for THIS program to read Safari pages.
+
+There will be two buttons: 'Don't Allow' and 'Allow'.
+
+**Click Allow.**
+
+If you accidentally click 'Don't Allow', I'll tell you how to fix
+it. Ready?"
+
+Wait for them to say yes. Then run:
+
+```bash
+./preflight.sh
+```
+
+This takes about 5-10 seconds. Tell the user: "Running the check
+now — give it a few seconds..."
+
+**If the user says "it says [some name] wants to control Safari,
+is that safe?":** Yes. Whatever name appears in that popup is the
+terminal app they're currently using. Tell them: "That's the program
+we're talking through right now. It's safe — click Allow."
+
+---
+
+### Step 9a: If the user clicked 'Don't Allow'
+
+Tell them:
+
+"No worries, easy fix. Here's what to do:
+
+1. Click the **Apple logo** in the very top-left corner of your screen.
+2. Click **System Settings** in the dropdown.
+3. In the left sidebar, scroll down and click **Privacy & Security**.
+4. Scroll down on the right side and click **Automation**.
+5. You'll see a list of apps. Find the one you're using right now:
+   - **Terminal** — the built-in Mac terminal (black icon with ">_")
+   - **iTerm** or **iTerm2** — a popular alternative terminal
+   - **Cursor** — AI code editor (purple icon)
+   - **Windsurf** — AI code editor (blue wave icon)
+   - **Code** — VS Code (blue icon)
+   - **Warp** — another terminal app
+   Not sure which one? It's whichever program you're reading this in.
+6. Under that app name, you'll see **Safari** with a toggle switch.
+   Turn that switch **ON** (it should turn blue or green).
+7. Close System Settings."
+
+Then run `./preflight.sh` again.
+
+---
+
+### Step 9b: Reading the preflight results
+
+**If all checks pass:**
+Tell the user: "Setup complete! I can now read and write to your
+Safari tabs. Let me show you what I can do."
+
+You'll see output like:
+```
+  [OK] Safari is running
+  [OK] osascript can read Safari
+  [OK] JavaScript from Apple Events
+  [OK] tab.sh utility works
+  [OK] Claude tab found (tab 1)
+  [OK] JS execution in Claude tab 1
+
+Result: 6 passed, 0 failed
+All checks passed.
+```
+
+**If some checks fail, use this decision tree:**
+
+❌ "Safari is not running"
+→ Tell user: "Open Safari and make sure it's running."
+
+❌ "osascript can read Safari" fails
+→ This is the automation permission. Follow Step 9a above.
+
+❌ "JavaScript from Apple Events" fails
+→ Tell user: "We need to redo one step. Click 'Develop' in the top
+  menu bar → 'Developer Settings' at the bottom → check the box for
+  'Allow JavaScript from Apple Events' → enter your password."
+
+❌ "tab.sh utility works" fails
+→ Tell user: "Make sure Safari has at least one tab open with a real
+  website loaded — not a blank tab."
+
+❌ "Claude tab found" fails
+→ Tell user: "Open a website in Safari — go to claude.ai, gmail.com,
+  or any site you want me to work with."
+
+❌ 3 or more checks failed
+→ Tell user: "A few things didn't save. Let's start clean:
+  1. Close Safari completely (Safari menu → Quit Safari, or Cmd+Q)
+  2. Wait 5 seconds
+  3. Open Safari again
+  4. Go to Safari → Settings → Advanced → check 'Show features for
+     web developers'
+  5. Close settings
+  6. Click Develop → Developer Settings → check 'Allow JavaScript
+     from Apple Events' → enter your password
+  7. Open a website (like claude.ai)
+  Then I'll run the check again."
+
+❌ ALL checks failed
+→ Something fundamental is wrong. Ask: "What kind of Mac do you have?
+  Click the Apple logo in the top-left → About This Mac. Tell me what
+  it says." This helps diagnose macOS version issues.
+
+---
+
+### Step 10: Start being useful
+
+Setup is done. Now IMMEDIATELY ask the user what they want to automate.
+Say exactly this:
+
+"Setup complete! wrapper-bot can now read and write to any website
+you're logged into in Safari. Two things I can do right now:
+
+1. **Manage your Gmail** — read your inbox, archive junk, star
+   important mail, set up filters so it stays clean
+2. **Watch a Claude conversation** — I can monitor a claude.ai tab
+   and relay messages between your phone and this terminal
+
+Which sounds useful? Or tell me any other website you want to automate."
+
+IMPORTANT: Do NOT just show a list of scripts. Offer the USE CASES.
+The user doesn't care about tab.sh — they care about inbox zero.
+
+If the user picks Gmail (or mentions email, inbox, gmail, messages):
+1. Run `./gmail-scan.sh` — this finds the Gmail tab and prints the inbox
+2. If it says "Gmail is not open": tell user "Open mail.google.com in Safari"
+3. Once you have the inbox list, show the user what's there
+4. Offer to help: archive junk, star important, set up filters
+5. To send email: `./gmail-compose.sh --to "addr" --subject "subj" --body "msg"`
+
+If the user picks Claude watching:
+```bash
+nohup ./watch.sh > /tmp/wrapper-watch.log 2>&1 &
+```
+Then explain: "Open claude.ai on your phone. Type what you want me
+to do. I'll see it within 15 seconds."
+
+Script reference (for your use, not the user's):
+
+Read any tab:
+```bash
+./scrape.sh --raw                    # front tab
+./scrape.sh --raw --tab 1            # specific tab by index
+```
+
+Write to any tab:
+```bash
+./post.sh "Hello from your AI assistant"
+./post.sh --tab 1 "message"
+```
+
+Send email (needs Gmail open in a tab):
+```bash
+./gmail-compose.sh --to "someone@example.com" --subject "Hello" --body "Message"
+```
+
+---
+
+## The user flow in plain english
+
+```
+User opens Safari and logs into a website
+    ↓
+You run ./scrape.sh — now you can read everything on that page
+    ↓
+You run ./post.sh "message" — now you can type into that page
+    ↓
+You run ./watch.sh — now you auto-detect when the page changes
+    ↓
+You are a full browser automation agent using eight shell scripts
+```
+
+## Script reference
+
+| Script | What it does | Example |
+|--------|-------------|---------|
+| `tab.sh` | Find which tab has which website | `./tab.sh find "gmail.com"` → `2` |
+| `scrape.sh` | Read all text from a Safari tab | `./scrape.sh --raw --tab 1` |
+| `post.sh` | Type a message and hit send | `./post.sh --tab 1 "Hi"` |
+| `gmail-compose.sh` | Compose and send an email | `./gmail-compose.sh --to "x@y.com" --subject "Hi" --body "Hello"` |
+| `watch.sh` | Watch for changes, save to files | `./watch.sh` (runs forever) |
+| `preflight.sh` | Check if setup is complete | `./preflight.sh --gmail` |
+
+## Requirements
+
+- macOS (any version with Safari)
+- Safari with "Allow JavaScript from Apple Events" enabled
+- A website open in a Safari tab (logged in)
+- That's it. No npm. No pip. No Docker. No API keys.
+
+---
+
+## Use Case 1: Phone-to-Terminal (Claude Dictation)
+
+The user wants to control their Mac terminal from their phone via claude.ai.
+
+How to set it up:
+1. User opens claude.ai in a Safari tab on their Mac
+2. Run `./watch.sh` in the background — it polls that tab every 15 seconds
+3. User opens claude.ai on their PHONE and types instructions
+4. watch.sh detects the new message, saves it to `chatsource/`
+5. The AI assistant on the Mac (Claude Code, Cursor, etc.) reads the
+   message and acts on it — runs tests, checks builds, deploys, etc.
+
+This is a read loop. The Mac watches for phone-typed messages.
+The AI on the Mac does whatever the message says.
+
+Example:
+```bash
+# Start watching (background)
+nohup ./watch.sh > /tmp/wrapper-watch.log 2>&1 &
+
+# The AI checks for new messages by reading the latest chatsource file
+ls -t chatsource/*.txt | head -1 | xargs cat
+```
+
+Tell the user: "Open claude.ai on your phone. Type what you want your
+Mac to do. I'll see it within 15 seconds and run it for you."
+
+---
+
+## Use Case 2: Gmail Inbox Helper
+
+The user wants their AI to manage their Gmail inbox.
+
+Prerequisites: Gmail open in a Safari tab (logged in).
+
+### Reading inbox (ONE COMMAND)
+
+```bash
+./gmail-scan.sh
+```
+
+This prints up to 30 emails, one per line:
+```
+[UNREAD] Jeffrey Robbins | AI Is Hitting the Grid Wall | 1:01 PM
+[read]   Amazon.com | Shipped: "Freshmage Fruit Storage..." | 3:30 AM
+```
+
+Quick count: `./gmail-scan.sh --count` → "1 unread out of 100 visible"
+
+If it says "Gmail is not open" → tell the user to open mail.google.com in Safari.
+
+### Sending email
+
+```bash
+./gmail-compose.sh \
+    --to "recipient@example.com" \
+    --subject "Subject line" \
+    --body "Message body"
+```
+
+### Inbox management via tab.sh js
+
+Use `./tab.sh js` to run JavaScript directly in the Gmail tab:
+
+```bash
+GMAIL_TAB=$(./tab.sh find "mail.google.com")
+
+# Count unread emails
+./tab.sh js "$GMAIL_TAB" "document.querySelectorAll('tr.zE').length"
+
+# Click "Select all" checkbox
+./tab.sh js "$GMAIL_TAB" "(function(){var c=document.querySelector('div[gh=\"tm\"] span[role=\"checkbox\"]');if(c)c.click();return c?'SELECTED':'NOT_FOUND'})()"
+
+# Click Archive button
+./tab.sh js "$GMAIL_TAB" "(function(){var a=document.querySelector('div[act=\"7\"]');if(a)a.click();return a?'ARCHIVED':'NOT_FOUND'})()"
+```
+
+### Creating filters
+
+Navigate to Gmail filter settings, then use tab.sh js to fill filter
+criteria and check action boxes:
+
+```bash
+# Navigate to filters
+./tab.sh js "$GMAIL_TAB" "window.location.hash='#settings/filters'"
+
+# After navigating: create, fill criteria, check action boxes via JS
+# For selecting a label from the dropdown: walk the user through
+# that one click. Everything else is automated.
+```
+
+When creating filters, the AI can automate these actions:
+- Skip the Inbox (Archive it)
+- Star it
+- Mark as read
+- Never send to Spam
+- Always mark as important
+- Never mark as important
+
+For applying a label: tell the user "Click the label name in the
+dropdown — I've already filled everything else." One click per filter.
+
+### Recommended filter setup for inbox zero
+
+Walk the user through creating these filters:
+
+| From / Has words | Action |
+|-----------------|--------|
+| `notifications@github.com` | Archive, never spam |
+| `noreply@` | Archive, never spam |
+| `*@substack.com` | Archive, never spam |
+| `unsubscribe` (has words) | Archive, never spam |
+| Domains the user cares about | Star, mark important |
+
+Tell the user: "I'll set up filters so junk gets archived automatically
+and important mail gets starred. Your inbox will only show things that
+need your attention."
+
+---
+
+## License
+
+CC0 1.0 Universal. Public domain.
